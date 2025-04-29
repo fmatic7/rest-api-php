@@ -95,6 +95,7 @@
             }
         }
 
+        //updateTask method recieves id parameter which represents id of task we want to fully update:
         function updateTask($id)
         {
             //Reading raw JSON data sent by client and decoding into PHP array:
@@ -134,6 +135,66 @@
                 //If a runtime error occurs, give client an appropriate message:
                 http_response_code(500);
                 echo json_encode(['Error' => 'Server error']);
+            }
+        }
+
+        //updateTitle method recieves id parameter which represents id of task we want to partially update (title):
+        function updateTitle($id)
+        {
+            //Reading raw JSON data sent by client and decoding into PHP array:
+            $input = json_decode(file_get_contents('php://input'), true);
+
+            if (!isset($input['title'])) {
+                http_response_code(400);
+                echo json_encode(['error' => 'Title is required']);
+                return;
+            }
+
+            //Assigning to variable needed to update a title of a task:
+            $title = htmlspecialchars($input['title']);
+
+            try 
+            {
+                //Running an SQL query for updating a title based on ID:
+                $statement = $this->pdo->prepare("UPDATE tasks SET title = :title WHERE id = :id");
+                $statement->execute(['title' => $title, 'id' => $id]);
+                http_response_code(200);
+                echo json_encode(['Success' => 'Title updated']);
+            } 
+            catch (Exception $e) 
+            {
+                http_response_code(500);
+                echo json_encode(['error' => 'Server Error']);
+            }
+        }
+
+        //updateStatus method recieves id parameter which represents id of task we want to partially update (isDone):
+        function updateStatus($id)
+        {
+            //Reading raw JSON data sent by client and decoding into PHP array:
+            $input = json_decode(file_get_contents('php://input'), true);
+
+            if (!isset($input['isDone'])) {
+                http_response_code(400);
+                echo json_encode(['error' => 'isDone status is required']);
+                return;
+            }
+
+            //Assigning to variable needed to update a status of a task:
+            $isDone = (int)$input['isDone'];
+
+            try 
+            {
+                //Running an SQL query for updating a status based on ID:
+                $statement = $this->pdo->prepare("UPDATE tasks SET isDone = :isDone WHERE id = :id");
+                $statement->execute(['isDone' => $isDone, 'id' => $id]);
+                http_response_code(200);
+                echo json_encode(['Success' => 'Status updated']);
+            } 
+            catch (Exception $e) 
+            {
+                http_response_code(500);
+                echo json_encode(['error' => 'Server Error']);
             }
         }
 

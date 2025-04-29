@@ -1,8 +1,12 @@
 ### Get all tasks
 GET http://localhost:3000/tasks
 
+
+
 ### Get a specific task by ID
 GET http://localhost:3000/tasks/7
+
+
 
 ### Create a new task
 POST http://localhost:3000/tasks
@@ -13,6 +17,8 @@ Content-Type: application/json
   "isDone": false
 }
 
+
+
 ### Update a task
 PUT http://localhost:3000/tasks/3
 Content-Type: application/json
@@ -21,6 +27,28 @@ Content-Type: application/json
   "title": "Go to the grocery store",
   "isDone": true
 }
+
+
+
+### Update a title of task with specified ID
+PATCH http://localhost:3000/tasks/3/title
+Content-Type: application/json
+
+{
+  "title": "Sleep"
+}
+
+
+
+### Update isDone status of task with specified ID
+PATCH http://localhost:3000/tasks/2/status
+Content-Type: application/json
+
+{
+  "isDone": true
+}
+
+
 
 ### Delete a task
 DELETE http://localhost:3000/tasks/8

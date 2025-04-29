@@ -20,6 +20,7 @@ The API allows performing standard CRUD operations via HTTP methods:
     GET - retrieves information about all tasks in the database
     GET/{id} - retrieves information of a single task by specifying its ID
     PUT/{id} - updates all information of a single task by specifying its ID
+    PATCH/{id}/field - updates field (in this case title or isDone) of a single task by specifying it after ID
     DELETE/{id} - deletes a task from the database by specifying its ID.
 
 HTTP response codes you can get after executing HTTP methods:
@@ -27,7 +28,7 @@ HTTP response codes you can get after executing HTTP methods:
     201 Created
     400 Bad Request
     404 Not Found
-    400 Internal Server Error.
+    500 Internal Server Error.
 
 
 Coding environment:

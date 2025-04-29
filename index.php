@@ -11,7 +11,7 @@
 
     //Getting and processing the URL path by splitting it wherever is /
     $request = explode('/', trim($_SERVER['REQUEST_URI'], '/'));
-
+    
     //Check if the first part of URL is tasks and rejecting if it isn't, sending an error message:
     if ($request[0] !== 'tasks')
     {
@@ -41,6 +41,28 @@
         case 'PUT':
             $id = isset($request[1]) ? (int)$request[1] : null;
             $controller->updateTask($id);
+            break;
+        case 'PATCH':
+            if (isset($request[1]) && isset($request[2]))
+            {
+                if ($request[2] === 'title') 
+                {
+                    $controller->updateTitle((int)$request[1]);
+                } 
+                elseif ($request[2] === 'status') 
+                {
+                    $controller->updateStatus((int)$request[1]);
+                } else 
+                {
+                    http_response_code(400);
+                    echo json_encode(['error' => 'Invalid PATCH operation']);
+                }
+            }
+            else
+            {
+                http_response_code(400);
+                echo json_encode(['error' => 'Invalid PATCH request']);
+            }
             break;
         case 'DELETE':
             $id = isset($request[1]) ? (int)$request[1] : null;
